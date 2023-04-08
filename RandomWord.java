@@ -1,13 +1,15 @@
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
+
 public class RandomWord {
-    public static void main(String[] args){
-        String champion = new String();
-        int i = 0;
+    public static void main(String[] args) {
+        String champion = "";
+        int i = 1;
         while (!StdIn.isEmpty())  {
-            if (StdRandom.bernoulli(1/(i+1.0))) {
-                champion = StdIn.readString();
+            String w = StdIn.readString();
+            if (StdRandom.bernoulli(1.0/i)) {
+                champion = w;
             }
             i++;
         }
