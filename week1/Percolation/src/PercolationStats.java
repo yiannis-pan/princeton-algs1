@@ -3,9 +3,9 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    double[] percPoints;
+    private final double[] percPoints;
 
-    int trials;
+    private final int trials;
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         //Initialise Properties
