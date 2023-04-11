@@ -19,7 +19,7 @@ public class PercolationStats {
                 pc.open(StdRandom.uniformInt(1, n +1), StdRandom.uniformInt(1,n + 1));
             }
             //When system percolates add the number of open sites it took to percolate on the percPoints array at the trial index
-            percPoints[i] = ((double) pc.numberOfOpenSites() / ((double) ((n * n) - 1)));
+            percPoints[i] = ((double) pc.numberOfOpenSites() / ((double) ((n * n) )));
 //            System.out.println("Total Sites: " + totalSites);
 //            System.out.println("System percolated at: " + pc.numberOfOpenSites() + " open sites" );
 //            System.out.println(percPoints[i]);
@@ -54,7 +54,7 @@ public class PercolationStats {
         PercolationStats test = new PercolationStats(n, t);
         System.out.println("mean = " + test.mean());
         System.out.println("stddev = " + test.stddev());
-        System.out.println("[ " + test.confidenceLo()  + ", " + test.confidenceHi() + "]");
+        System.out.println("95% confidence interval = [" + test.confidenceLo() + ", " + test.confidenceHi() + "]");
     }
 
 }
