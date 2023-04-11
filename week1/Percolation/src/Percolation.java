@@ -139,6 +139,7 @@ public class Percolation {
         //Connect it with virtual top is row is 1
         if (findRow(indexToCheck) == 1) {
             this.uf.union(indexToCheck, 0);
+            this.ufNoBottom.union(indexToCheck, 0);
         }
         //Connect with the virtual bottom if row is n
         if (findRow(indexToCheck) == n) {
