@@ -4,9 +4,9 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    private int n;
-    private boolean[] grid;
-    private WeightedQuickUnionUF uf;
+    private final int n;
+    private final boolean[] grid;
+    private final WeightedQuickUnionUF uf;
     private int numberOfOpenSites = 0;
 
     private void checkForBounds(int row, int col) {
@@ -19,8 +19,7 @@ public class Percolation {
         return (((row - 1) * this.n) + (col- 1));
     }
     private boolean isConnected (int p, int q) {
-        if (this.uf.find(p) == this.uf.find(q)) { return true;}
-        return false;
+        return this.uf.find(p) == this.uf.find(q);
     }
     private int findRow(int index) {
         for (int i = 0; i <n + 1; i++ ){
@@ -31,7 +30,6 @@ public class Percolation {
         return  0;
     }
     private boolean isTheSameRow(int p, int q) {
-        int row = 0;
         for (int i = 0; i < this.n; i++) {
             if (findRow(p) == findRow(q)) {
                 return true;
@@ -70,10 +68,10 @@ public class Percolation {
         //Get an array of neighbour indexes
         int[] neighbourIndexes = getIndexesOfOpenedNeighbours(indexToCheck);
         //Loop through neighbour indexes. If neighbour site is open, union open site with user provided index (connect them)
-        for (int i = 0; i < neighbourIndexes.length; i++) {
-            if (neighbourIndexes[i] != -1) {
-                if (grid[neighbourIndexes[i]]) {
-                    this.uf.union(neighbourIndexes[i], indexToCheck);
+        for (int neighbourIndex : neighbourIndexes) {
+            if (neighbourIndex != -1) {
+                if (grid[neighbourIndex]) {
+                    this.uf.union(neighbourIndex, indexToCheck);
 
                 }
             }
@@ -93,15 +91,13 @@ public class Percolation {
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
         int indexToCheck = convertCordsToIndex(row, col);
-        if (this.grid[indexToCheck]) {return  true;}
-        return false;
+        return this.grid[indexToCheck];
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
         int indexToCheck = convertCordsToIndex(row, col);
-        if (isConnected(indexToCheck, 0)) {return  true;}
-        return false;
+        return isConnected(indexToCheck, 0);
     }
 
     // returns the number of open sites
@@ -111,8 +107,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        if (isConnected(0, grid.length- 1)) {return true;}
-        return false;
+        return isConnected(0, grid.length - 1);
     }
 
     // test client (optional)
