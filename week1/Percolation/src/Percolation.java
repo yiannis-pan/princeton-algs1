@@ -18,11 +18,11 @@ public class Percolation {
         checkForBounds(row, col);
         return (((row - 1) * this.n) + (col- 1));
     }
-    private boolean isConnected (int p, int q) {
+    private boolean isConnected(int p, int q) {
         return this.uf.find(p) == this.uf.find(q);
     }
     private int findRow(int index) {
-        for (int i = 0; i <n + 1; i++ ) {
+        for (int i = 0; i<n + 1; i++) {
             if (((this.n * i) - index) > 0) {
                 return i;
             }
@@ -37,7 +37,7 @@ public class Percolation {
         }
         return false;
     }
-    private int[] getIndexesOfOpenedNeighbours (int indexToCheck) {
+    private int[] getIndexesOfOpenedNeighbours(int indexToCheck) {
         int[] neighbourIndexes = new int[4];
         if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
             neighbourIndexes[0] = indexToCheck + 1;
@@ -52,7 +52,7 @@ public class Percolation {
             neighbourIndexes[1] = -1;
         }
         if (indexToCheck + n < grid.length - 1) {
-            neighbourIndexes[2]= indexToCheck + n ;
+            neighbourIndexes[2] = indexToCheck + n ;
         } else {
             neighbourIndexes[2] = -1;
         }

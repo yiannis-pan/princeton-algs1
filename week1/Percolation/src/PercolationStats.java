@@ -21,9 +21,9 @@ public class PercolationStats {
             }
             //When system percolates add the number of open sites it took to percolate on the percPoints array at the trial index
             percPoints[i] = ((double) pc.numberOfOpenSites() / ((double) ((n * n) - 1)));
-            System.out.println("Total Sites: " + totalSites);
-            System.out.println("System percolated at: " + pc.numberOfOpenSites() + " open sites" );
-            System.out.println(percPoints[i]);
+//            System.out.println("Total Sites: " + totalSites);
+//            System.out.println("System percolated at: " + pc.numberOfOpenSites() + " open sites" );
+//            System.out.println(percPoints[i]);
         }
     }
 
