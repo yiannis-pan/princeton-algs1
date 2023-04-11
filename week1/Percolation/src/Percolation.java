@@ -8,7 +8,14 @@ public class Percolation {
     private boolean[] grid;
     private WeightedQuickUnionUF uf;
     private int numberOfOpenSites = 0;
+
+    private void checkForBounds(int row, int col) {
+        if ((row <= 0) || (col <= 0) || (row > n) || (col > n)){
+            throw new IllegalArgumentException();
+        }
+    }
     private int convertCordsToIndex(int row, int col) {
+        checkForBounds(row, col);
         return (((row - 1) * this.n) + (col- 1));
     }
     private boolean isConnected (int p, int q) {
@@ -43,6 +50,7 @@ public class Percolation {
     }
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
+        if (n <=0)  {throw new IllegalArgumentException();}
         this.grid = new boolean[(n*n) + 2];
         this.n = n;
         this.uf = new WeightedQuickUnionUF(grid.length);
@@ -55,6 +63,7 @@ public class Percolation {
     public void open(int row, int col) {
         //Get the index of the site to check
         int indexToCheck = convertCordsToIndex(row, col);
+
         System.out.println("Opening: " + indexToCheck);
         //If site is open return
         if (grid[indexToCheck]) {return;}
@@ -83,13 +92,15 @@ public class Percolation {
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-        if (this.grid[convertCordsToIndex(row, col)]) {return  true;}
+        int indexToCheck = convertCordsToIndex(row, col);
+        if (this.grid[indexToCheck]) {return  true;}
         return false;
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if (isConnected(convertCordsToIndex(row,col), 0)) {return  true;}
+        int indexToCheck = convertCordsToIndex(row, col);
+        if (isConnected(indexToCheck, 0)) {return  true;}
         return false;
     }
 
@@ -107,6 +118,7 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args) {
         Percolation test = new Percolation(5);
+        test.open(1,1);
         test.open(1,3);
         test.open(2,3);
         test.open(3,3);
@@ -114,13 +126,14 @@ public class Percolation {
         test.open(4,4);
         test.open(5,4);
         test.open(5,5);
+//        test.open(1,4);
         System.out.println("Is site at (3,1) open?: " + test.isOpen(3,1));
         System.out.println("Is site at (3,4) open?: " + test.isOpen(3,4));
         System.out.println("Number of open sites: " + test.numberOfOpenSites());
         System.out.println("Is the group that has site 4,4 full?: " + test.isFull(4,4));
         System.out.println("Is the group that has site 4,4 full?: " + test.isFull(2,1));
         System.out.println("Does the system percolate ?: " + test.percolates());
-        
+
 //      _____1__2__3__4__5
 //   1   |   0  1  2  3  4
 //   2   |   5  6  7  8  9
