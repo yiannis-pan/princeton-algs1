@@ -95,25 +95,32 @@ public class Percolation {
 //                }
 //            }
 //        }
+        System.out.println("Opening " + indexToCheck);
         if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
             if (grid[indexToCheck + 1]) {
+//                System.out.println("neighbour: " + (indexToCheck + 1));
                 this.uf.union(indexToCheck , indexToCheck + 1);
             }
         }
         if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {
             if (grid[indexToCheck -1]) {
+//                System.out.println("neighbour: " + (indexToCheck - 1));
                 this.uf.union(indexToCheck, indexToCheck -1);
             }
         }
 
         if (indexToCheck + n < grid.length - 1) {
             if (grid[indexToCheck + n]) {
+//                System.out.println("neighbour: " + (indexToCheck + n));
+
                 this.uf.union(indexToCheck, indexToCheck + n);
             }
         }
 
-        if (indexToCheck - n > 0) {
+        if (indexToCheck - n >= 0) {
             if (grid[indexToCheck - n]) {
+//                System.out.println("neighbour: " + (indexToCheck - n));
+
                 this.uf.union(indexToCheck, indexToCheck - n);
             }
         }
@@ -143,7 +150,7 @@ public class Percolation {
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
         int indexToCheck = convertCordsToIndex(row, col);
-        return isConnected(indexToCheck, 0);
+        return isConnected(indexToCheck, 0) && isOpen(row, col);
     }
 
     // returns the number of open sites
@@ -159,21 +166,23 @@ public class Percolation {
     // test client (optional)
     public static void main(String[] args) {
         Percolation test = new Percolation(5);
-        test.open(1,1);
-        test.open(1,3);
-        test.open(2,3);
-        test.open(3,3);
-        test.open(3,4);
-        test.open(4,4);
-        test.open(5,4);
         test.open(5,5);
+//        test.open(1,3);
+        test.open(4,5);
+//        test.open(3,3);
+//        test.open(3,4);
+//        test.open(4,4);
+//        test.open(5,4);
+//        test.open(5,5);
 //        test.open(1,4);
-        System.out.println("Is site at (3,1) open?: " + test.isOpen(3,1));
-        System.out.println("Is site at (3,4) open?: " + test.isOpen(3,4));
-        System.out.println("Number of open sites: " + test.numberOfOpenSites());
-        System.out.println("Is the group that has site 4,4 full?: " + test.isFull(4,4));
-        System.out.println("Is the group that has site 4,4 full?: " + test.isFull(2,1));
-        System.out.println("Does the system percolate ?: " + test.percolates());
+        System.out.println("is open: " + test.isOpen(2,1));
+        System.out.println("is full: " + test.isFull(5,5));
+//        System.out.println("Is site at (3,1) open?: " + test.isOpen(3,1));
+//        System.out.println("Is site at (3,4) open?: " + test.isOpen(3,4));
+//        System.out.println("Number of open sites: " + test.numberOfOpenSites());
+//        System.out.println("Is the group that has site 4,4 full?: " + test.isFull(4,4));
+//        System.out.println("Is the group that has site 4,4 full?: " + test.isFull(2,1));
+//        System.out.println("Does the system percolate ?: " + test.percolates());
 
 //      _____1__2__3__4__5
 //   1   |   0  1  2  3  4
