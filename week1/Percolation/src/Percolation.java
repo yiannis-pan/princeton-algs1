@@ -10,7 +10,7 @@ public class Percolation {
     private int numberOfOpenSites = 0;
 
     private void checkForBounds(int row, int col) {
-        if ((row <= 0) || (col <= 0) || (row > n) || (col > n)){
+        if ((row <= 0) || (col <= 0) || (row > n) || (col > n)) {
             throw new IllegalArgumentException();
         }
     }
@@ -22,7 +22,7 @@ public class Percolation {
         return this.uf.find(p) == this.uf.find(q);
     }
     private int findRow(int index) {
-        for (int i = 0; i <n + 1; i++ ){
+        for (int i = 0; i <n + 1; i++ ) {
             if (((this.n * i) - index) > 0) {
                 return i;
             }
@@ -39,16 +39,36 @@ public class Percolation {
     }
     private int[] getIndexesOfOpenedNeighbours (int indexToCheck) {
         int[] neighbourIndexes = new int[4];
-        if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {neighbourIndexes[0] = indexToCheck + 1;} else {neighbourIndexes[0] = -1;}
-        if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {neighbourIndexes[1] = indexToCheck -1;} else {neighbourIndexes[1] = -1;}
-        if (indexToCheck + n < grid.length - 1) {neighbourIndexes[2]= indexToCheck + n ;} else {neighbourIndexes[2] = -1;}
-        if (indexToCheck - n > 0) {neighbourIndexes[3]= indexToCheck - n;} else {neighbourIndexes[3] = -1;}
+        if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
+            neighbourIndexes[0] = indexToCheck + 1;
+        }
+        else {
+            neighbourIndexes[0] = -1;
+        }
+        if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {
+            neighbourIndexes[1] = indexToCheck -1;
+        }
+        else {
+            neighbourIndexes[1] = -1;
+        }
+        if (indexToCheck + n < grid.length - 1) {
+            neighbourIndexes[2]= indexToCheck + n ;
+        } else {
+            neighbourIndexes[2] = -1;
+        }
+        if (indexToCheck - n > 0) {
+            neighbourIndexes[3]= indexToCheck - n;
+        } else {
+            neighbourIndexes[3] = -1;
+        }
 
         return neighbourIndexes;
     }
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
-        if (n <=0)  {throw new IllegalArgumentException();}
+        if (n <=0)  {
+            throw new IllegalArgumentException();
+        }
         this.grid = new boolean[(n*n) + 2];
         this.n = n;
         this.uf = new WeightedQuickUnionUF(grid.length);
@@ -61,10 +81,10 @@ public class Percolation {
     public void open(int row, int col) {
         //Get the index of the site to check
         int indexToCheck = convertCordsToIndex(row, col);
-
-        System.out.println("Opening: " + indexToCheck);
         //If site is open return
-        if (grid[indexToCheck]) {return;}
+        if (grid[indexToCheck]) {
+            return;
+        }
         //Get an array of neighbour indexes
         int[] neighbourIndexes = getIndexesOfOpenedNeighbours(indexToCheck);
         //Loop through neighbour indexes. If neighbour site is open, union open site with user provided index (connect them)
@@ -72,7 +92,6 @@ public class Percolation {
             if (neighbourIndex != -1) {
                 if (grid[neighbourIndex]) {
                     this.uf.union(neighbourIndex, indexToCheck);
-
                 }
             }
         }
@@ -81,9 +100,13 @@ public class Percolation {
         //Increase the number of open sites
         this.numberOfOpenSites ++;
         //Connect it with virtual top is row is 1
-        if (findRow(indexToCheck) == 1) {this.uf.union(indexToCheck, 0); System.out.println("connected index: " + indexToCheck + " with the virtual top");}
+        if (findRow(indexToCheck) == 1) {
+            this.uf.union(indexToCheck, 0);
+        }
         //Connect with the virtual bottom if row is n
-        if (findRow(indexToCheck) == n) {this.uf.union(indexToCheck, grid.length-1); System.out.println("connected index: " + indexToCheck + " with the virtual bottom");}
+        if (findRow(indexToCheck) == n) {
+            this.uf.union(indexToCheck, grid.length-1);
+        }
 
 
     }
