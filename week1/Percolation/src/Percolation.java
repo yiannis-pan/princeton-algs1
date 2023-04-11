@@ -37,33 +37,33 @@ public class Percolation {
         }
         return false;
     }
-    private int[] getIndexesOfOpenedNeighbours(int indexToCheck) {
-        int[] neighbourIndexes = new int[4];
-        if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
-            neighbourIndexes[0] = indexToCheck + 1;
-        }
-        else {
-            neighbourIndexes[0] = -1;
-        }
-        if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {
-            neighbourIndexes[1] = indexToCheck -1;
-        }
-        else {
-            neighbourIndexes[1] = -1;
-        }
-        if (indexToCheck + n < grid.length - 1) {
-            neighbourIndexes[2] = indexToCheck + n ;
-        } else {
-            neighbourIndexes[2] = -1;
-        }
-        if (indexToCheck - n > 0) {
-            neighbourIndexes[3]= indexToCheck - n;
-        } else {
-            neighbourIndexes[3] = -1;
-        }
-
-        return neighbourIndexes;
-    }
+//    private int[] getIndexesOfOpenedNeighbours(int indexToCheck) {
+//        int[] neighbourIndexes = new int[4];
+//        if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
+//            neighbourIndexes[0] = indexToCheck + 1;
+//        }
+//        else {
+//            neighbourIndexes[0] = -1;
+//        }
+//        if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {
+//            neighbourIndexes[1] = indexToCheck -1;
+//        }
+//        else {
+//            neighbourIndexes[1] = -1;
+//        }
+//        if (indexToCheck + n < grid.length - 1) {
+//            neighbourIndexes[2] = indexToCheck + n ;
+//        } else {
+//            neighbourIndexes[2] = -1;
+//        }
+//        if (indexToCheck - n > 0) {
+//            neighbourIndexes[3]= indexToCheck - n;
+//        } else {
+//            neighbourIndexes[3] = -1;
+//        }
+//
+//        return neighbourIndexes;
+//    }
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
         if (n <=0)  {
@@ -86,16 +86,39 @@ public class Percolation {
             return;
         }
         //Get an array of neighbour indexes
-        int[] neighbourIndexes = getIndexesOfOpenedNeighbours(indexToCheck);
+//        int[] neighbourIndexes = getIndexesOfOpenedNeighbours(indexToCheck);
         //Loop through neighbour indexes. If neighbour site is open, union open site with user provided index (connect them)
-        for (int neighbourIndex : neighbourIndexes) {
-            if (neighbourIndex != -1) {
-                if (grid[neighbourIndex]) {
-                    this.uf.union(neighbourIndex, indexToCheck);
-                }
+//        for (int neighbourIndex : neighbourIndexes) {
+//            if (neighbourIndex != -1) {
+//                if (grid[neighbourIndex]) {
+//                    this.uf.union(neighbourIndex, indexToCheck);
+//                }
+//            }
+//        }
+        if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
+            if (grid[indexToCheck + 1]) {
+                this.uf.union(indexToCheck , indexToCheck + 1);
             }
         }
-        //Open the site
+        if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {
+            if (grid[indexToCheck -1]) {
+                this.uf.union(indexToCheck, indexToCheck -1);
+            }
+        }
+
+        if (indexToCheck + n < grid.length - 1) {
+            if (grid[indexToCheck + n]) {
+                this.uf.union(indexToCheck, indexToCheck + n);
+            }
+        }
+
+        if (indexToCheck - n > 0) {
+            if (grid[indexToCheck - n]) {
+                this.uf.union(indexToCheck, indexToCheck - n);
+            }
+        }
+
+            //Open the site
         this.grid[indexToCheck] = true;
         //Increase the number of open sites
         this.numberOfOpenSites ++;
