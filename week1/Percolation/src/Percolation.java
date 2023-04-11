@@ -6,7 +6,10 @@ public class Percolation {
 
     private final int n;
     private final boolean[] grid;
+
     private final WeightedQuickUnionUF uf;
+
+    private final WeightedQuickUnionUF ufNoBottom;
     private int numberOfOpenSites = 0;
 
     private void checkForBounds(int row, int col) {
@@ -18,8 +21,8 @@ public class Percolation {
         checkForBounds(row, col);
         return (((row - 1) * this.n) + (col- 1));
     }
-    private boolean isConnected(int p, int q) {
-        return this.uf.find(p) == this.uf.find(q);
+    private boolean isConnected(int p, int q, WeightedQuickUnionUF someUf) {
+        return someUf.find(p) == someUf.find(q);
     }
     private int findRow(int index) {
         for (int i = 0; i<n + 1; i++) {
@@ -72,6 +75,7 @@ public class Percolation {
         this.grid = new boolean[(n*n) + 2];
         this.n = n;
         this.uf = new WeightedQuickUnionUF(grid.length);
+        this.ufNoBottom = new WeightedQuickUnionUF(grid.length -1);
         for (int i =1; i < grid.length - 2 ; i++) {
             grid[i] = false;
         }
@@ -95,24 +99,27 @@ public class Percolation {
 //                }
 //            }
 //        }
-        System.out.println("Opening " + indexToCheck);
+//        System.out.println("Opening " + indexToCheck);
         if (isTheSameRow(indexToCheck, indexToCheck + 1) && (indexToCheck + 1 < this.grid.length)) {
             if (grid[indexToCheck + 1]) {
 //                System.out.println("neighbour: " + (indexToCheck + 1));
                 this.uf.union(indexToCheck , indexToCheck + 1);
+                this.ufNoBottom.union(indexToCheck , indexToCheck + 1);
+
             }
         }
         if (isTheSameRow(indexToCheck, indexToCheck - 1) && (indexToCheck - 1 >= 0)) {
             if (grid[indexToCheck -1]) {
 //                System.out.println("neighbour: " + (indexToCheck - 1));
                 this.uf.union(indexToCheck, indexToCheck -1);
+                this.ufNoBottom.union(indexToCheck , indexToCheck - 1);
             }
         }
 
         if (indexToCheck + n < grid.length - 1) {
             if (grid[indexToCheck + n]) {
 //                System.out.println("neighbour: " + (indexToCheck + n));
-
+                this.ufNoBottom.union(indexToCheck , indexToCheck + n);
                 this.uf.union(indexToCheck, indexToCheck + n);
             }
         }
@@ -120,12 +127,12 @@ public class Percolation {
         if (indexToCheck - n >= 0) {
             if (grid[indexToCheck - n]) {
 //                System.out.println("neighbour: " + (indexToCheck - n));
-
+                this.ufNoBottom.union(indexToCheck , indexToCheck - n);
                 this.uf.union(indexToCheck, indexToCheck - n);
             }
         }
 
-            //Open the site
+        //Open the site
         this.grid[indexToCheck] = true;
         //Increase the number of open sites
         this.numberOfOpenSites ++;
@@ -135,6 +142,7 @@ public class Percolation {
         }
         //Connect with the virtual bottom if row is n
         if (findRow(indexToCheck) == n) {
+//            System.out.println("connecting with virtual bottom");
             this.uf.union(indexToCheck, grid.length-1);
         }
 
@@ -150,7 +158,7 @@ public class Percolation {
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
         int indexToCheck = convertCordsToIndex(row, col);
-        return isConnected(indexToCheck, 0) && isOpen(row, col);
+        return isConnected(indexToCheck, 0, this.ufNoBottom) && isOpen(row, col);
     }
 
     // returns the number of open sites
@@ -160,23 +168,22 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return isConnected(0, grid.length - 1);
+        return isConnected(0, grid.length - 1, this.uf);
     }
 
     // test client (optional)
     public static void main(String[] args) {
-        Percolation test = new Percolation(5);
-        test.open(5,5);
-//        test.open(1,3);
-        test.open(4,5);
-//        test.open(3,3);
-//        test.open(3,4);
-//        test.open(4,4);
-//        test.open(5,4);
+        Percolation test = new Percolation(3);
+        test.open(1,3);
+        test.open(2,3);
+        test.open(3,3);
+        test.open(3,1);
+        System.out.println("is full: " + test.isFull(3,1));
+//        test.open(2,1);
+//        test.open(1,1);
 //        test.open(5,5);
+//        System.out.println("is open: " + test.isOpen(2,1));
 //        test.open(1,4);
-        System.out.println("is open: " + test.isOpen(2,1));
-        System.out.println("is full: " + test.isFull(5,5));
 //        System.out.println("Is site at (3,1) open?: " + test.isOpen(3,1));
 //        System.out.println("Is site at (3,4) open?: " + test.isOpen(3,4));
 //        System.out.println("Number of open sites: " + test.numberOfOpenSites());
