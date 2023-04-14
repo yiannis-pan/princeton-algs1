@@ -2,10 +2,10 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private static final double  CONFIDENCE_95 = 1.96;
+    private static final double CONFIDENCE_95 = 1.96;
     private final double[] percPoints;
-
     private final int trials;
+    
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         //Initialise Properties
@@ -22,9 +22,7 @@ public class PercolationStats {
             }
             //When system percolates add the number of open sites it took to percolate on the percPoints array at the trial index
             percPoints[i] = ((double) pc.numberOfOpenSites() / ((double) ((n * n) )));
-//            System.out.println("Total Sites: " + totalSites);
-//            System.out.println("System percolated at: " + pc.numberOfOpenSites() + " open sites" );
-//            System.out.println(percPoints[i]);
+
         }
     }
 
