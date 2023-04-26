@@ -1,5 +1,4 @@
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
@@ -28,13 +27,14 @@ public class Deque<Item> implements Iterable<Item> {
     }
     // add the item to the front
     public void addFirst(Item item){
+        //Check if item is null
         if (item == null) {throw new IllegalArgumentException();}
 
         //Make the new node and assign the item
         Node newFirst = new Node();
         newFirst.item = item;
 
-        //If queue is empty then the new node wont point to a next or a prev node
+        //If queue is empty then the new node won't point to a next or a prev node
         if (this.isEmpty()) {
             this.first = newFirst;
             this.last = newFirst;
@@ -82,6 +82,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.isEmpty()) {throw new NoSuchElementException();}
         Node firstOne = first;
         this.first = first.next;
+        this.size--;
         return firstOne.item;
     }
 
@@ -90,18 +91,17 @@ public class Deque<Item> implements Iterable<Item> {
         if (this.isEmpty()) {throw new NoSuchElementException();}
         Node lastOne = last;
         this.last = last.prev;
+        this.size--;
         return lastOne.item;
     }
 
     // return an iterator over items in order from front to back
     public Iterator<Item> iterator(){
         return new ListIterator();
-
     }
 
     private class ListIterator implements Iterator<Item> {
         private Node current = first;
-
         public boolean hasNext() {return current != null;}
         public void remove() {throw new UnsupportedOperationException();}
 
@@ -115,7 +115,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args){
-        Deque test = new Deque<String>();
+        Deque<String> test = new Deque<String>();
         test.addFirst("I'm the first one in");
         test.addFirst("I'm the first first one in");
         test.addLast("I'm the first to the to the end");
