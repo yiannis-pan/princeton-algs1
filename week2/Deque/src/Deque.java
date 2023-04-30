@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.In;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -8,8 +10,8 @@ public class Deque<Item> implements Iterable<Item> {
         Node prev;
     }
     private int size;
-    private Node first;
-    private Node last;
+     private Node first;
+     private Node last;
 
     // construct an empty deque
     public Deque(){
@@ -43,9 +45,7 @@ public class Deque<Item> implements Iterable<Item> {
             newFirst.prev = first;
             //The current first will have the new first as it's next
             first.next = newFirst;
-            //The new first wont have anything next
-//            newFirst.next = null;
-            //The new first will become the first
+
             this.first = newFirst;
         }
         //Increase the size of the que
@@ -80,19 +80,32 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the front
     public Item removeFirst() {
         if (this.isEmpty()) {throw new NoSuchElementException();}
-        Node firstOne = first;
-        this.first = first.next;
         this.size--;
+        Node firstOne = first;
+        if (this.size() >= 1) {
+            this.first = first.prev;
+        } else {
+            this.last = null;
+            this.first = null;
+        }
         return firstOne.item;
     }
 
     // remove and return the item from the back
     public Item removeLast() {
         if (this.isEmpty()) {throw new NoSuchElementException();}
-        Node lastOne = last;
-        this.last = last.prev;
+        if (this.size() > 1) {
+            Node oldLast = this.last;
+            this.last = last.next;
+            this.last.prev = null;
+            this.size--;
+            return oldLast.item;
+        }
+        Item onlyNodeItem = this.last.item;
+        this.first = null;
+        this.last = null;
         this.size--;
-        return lastOne.item;
+        return onlyNodeItem;
     }
 
     // return an iterator over items in order from front to back
@@ -102,11 +115,15 @@ public class Deque<Item> implements Iterable<Item> {
 
     private class ListIterator implements Iterator<Item> {
         private Node current = first;
-        public boolean hasNext() {return current != null;}
+        public boolean hasNext() {
+            return current != null;
+        }
         public void remove() {throw new UnsupportedOperationException();}
 
         public Item next() {
-            if (!hasNext()) {throw new NoSuchElementException();}
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
             Item item = current.item;
             current = current.prev;
             return item;
@@ -115,22 +132,43 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args){
+//        Deque<Integer> test = new Deque<Integer>();
         Deque<String> test = new Deque<String>();
-        test.addFirst("I'm the first one in");
         test.addFirst("I'm the first first one in");
+        test.addFirst("I'm the first first one in 2");
+        test.addFirst("I'm the first first one in 3");
         test.addLast("I'm the first to the to the end");
+        test.addLast("I'm the first to the to the end 2");
+        test.addLast("I'm the first to the to the end 3");
         test.addLast("I'm the last last one in");
-        System.out.println(test.size() + " Elements");
+//        test.removeFirst();
+//        test.removeLast();
+//        test.addLast(1);
+//        test.addFirst(2);
+//        test.removeLast();
+        test.removeFirst();
+//        test.addLast(5);
+//        test.addFirst(6);
+//        test.removeFirst();
+//        test.addFirst(8);
+        System.out.println(test.size());
+        System.out.println(test.iterator());
+
+//        System.out.println(test.size() + " Elements");
         System.out.println(test.isEmpty());
 
-//        System.out.println(test.removeFirst());
-//        System.out.println(test.removeLast());
-        for (Object s: test
-             ) { System.out.println(s);
+//        test.removeFirst();
 
+//        test.removeLast();
+        test.removeLast();
+//        test.removeLast();
+
+/*        System.out.println(test.size() + ": size");
+        System.out.println(test.size());
+
+        System.out.println(test.removeFirst() + ": removing");
+        System.out.println(test.removeLast() + ": removing") ;*/
+        for (Object s: test) { System.out.println(s);
         }
-
-
     }
-
 }
